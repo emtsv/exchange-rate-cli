@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 
+	"github.com/emtsv/exchange-rate-cli/internal/commands/timeutil"
 	"github.com/spf13/cobra"
 )
 
@@ -17,10 +18,16 @@ func NewRateCMD() *cobra.Command {
 				return fmt.Errorf("нужно указать валюту через флаг --code, например: fx rate --code USD")
 			}
 
-			fmt.Printf("Курс валюты %s на дату %s (заглушка)\n", code, date)
+			pdate, err := timeutil.ParseDate(date)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Курс валюты %s на дату %s (заглушка)\n", code, pdate)
 			return nil
 		},
 	}
+
 	rateCmd.Flags().StringVarP(&code, "code", "c", "", "Код валюты (например, USD, EUR)")
 	rateCmd.Flags().StringVarP(&date, "date", "d", "", "Дата в формате YYYY-MM-DD (опционально)")
 

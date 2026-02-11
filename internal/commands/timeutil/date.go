@@ -1,26 +1,16 @@
-package commands
+package timeutil
 
-import (
-	"fmt"
-	"time"
-)
+import "time"
 
-func def() (day, month, year int) {
-	default_time := time.Now()
-	return default_time.Day(), default_time.Month(), default_time.Year()
-}
+func ParseDate(date string) (string, error) {
+	if date == "" {
+		return time.Now().Format("2006/01/02"), nil
+	}
 
-func parse() {
-	day, month, year := def()
-	fmt.Printf("Сегодняшняя дата: \n", &day, &month, &year)
-}
+	t, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return "", err
+	}
 
-func convertion(date) {
-	
-	date:=fmt.Scan(&day,&month,&year)
-	date := (year, time.Month(month),day,0,0,0,0, time.UTC)
-
-	formatted:=date.Format("02/01/2006")
-
-
+	return t.Format("2006/01/02"), nil
 }
