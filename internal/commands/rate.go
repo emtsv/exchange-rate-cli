@@ -20,7 +20,8 @@ func NewRateCMD() *cobra.Command {
 
 			pdate, err := timeutil.ParseDate(date)
 			if err != nil {
-				return err
+				return fmt.Errorf(
+					"неправильная дата: %s", err)
 			}
 
 			fmt.Printf("Курс валюты %s на дату %s (заглушка)\n", code, pdate)
