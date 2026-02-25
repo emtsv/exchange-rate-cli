@@ -1,10 +1,8 @@
-package timeutil_test
+package timeutil
 
 import (
 	"testing"
 	"time"
-
-	"github.com/emtsv/exchange-rate-cli/internal/commands/timeutil"
 )
 
 func TestDate(t *testing.T) {
@@ -35,7 +33,7 @@ func TestDate(t *testing.T) {
 		},
 	}
 	for _, testCase := range testTable {
-		result, err := timeutil.ParseDate(testCase.tdate)
+		result, err := ParseDate(testCase.tdate)
 		if err != nil {
 			t.Errorf("Ошибка %v", err)
 		}
