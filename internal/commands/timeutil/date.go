@@ -1,8 +1,14 @@
 package timeutil
 
 import (
-	"fmt"
+	"errors"
 	"time"
+)
+
+var (
+	ErrDateTooOld   = errors.New("дата должна быть после 2000 года")
+	ErrInvalidDate  = errors.New("неверный формат даты")
+	ErrDateInFuture = errors.New("дата не может быть в будущем")
 )
 
 var now = time.Now()
@@ -15,15 +21,15 @@ func ParseDate(date string) (string, error) {
 
 	t, err := time.Parse("2006-01-02", date)
 	if err != nil {
-		return "", err
+		return "", ErrInvalidDate
 	}
 
 	if t.Year() < 2000 {
-		return "", fmt.Errorf("дата должна быть после 2000 года")
+		return "", ErrDateTooOld
 	}
 
 	if t.After(now) {
-		return "", fmt.Errorf("дата не может быть в будущем")
+		return "", ErrDateInFuture
 	}
 
 	return t.Format("2006/01/02"), nil

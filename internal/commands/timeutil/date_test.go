@@ -1,50 +1,66 @@
-package timeutil
+package timeutil_test
 
 import (
 	"testing"
 	"time"
+
+	"github.com/emtsv/exchange-rate-cli/internal/commands/timeutil"
+	"github.com/stretchr/testify/require"
 )
 
-func TestDate(t *testing.T) {
+func TestDate2(t *testing.T) {
+	t.Parallel()
+	now := time.Now()
+
 	testTable := []struct {
-		tdate    string
-		expected string
+		name         string
+		date         string
+		expectedDate string
+		expectedErr  require.ErrorAssertionFunc
 	}{
 		{
-			tdate:    "2000-01-01",
-			expected: "2000/01/01",
+			name:         "valid date",
+			date:         "2000-01-01",
+			expectedDate: "2000/01/01",
+			expectedErr:  require.NoError,
 		},
 
 		{
-			tdate:    "1900-01-01",
-			expected: "Дата должна быть после 2000 года",
+			name: "to old date",
+			date: "1900-01-01",
+			expectedErr: func(t require.TestingT, err error, i ...any) {
+				require.ErrorIs(t, err, timeutil.ErrDateTooOld)
+			},
 		},
 		{
-			tdate:    "2022-12-",
-			expected: "неправильная дата: %s",
+			date:         "2022-12-",
+			expectedDate: "",
+			expectedErr: func(t require.TestingT, err error, i ...any) {
+				require.ErrorIs(t, err, timeutil.ErrInvalidDate)
+			},
 		},
 		{
-			tdate:    "",
-			expected: "",
+			name:         "empty date",
+			date:         "",
+			expectedDate: now.Format("2006/01/02"),
+			expectedErr:  require.NoError,
 		},
 		{
-			tdate:    "2022/01/01",
-			expected: "неправильная дата: %s",
+			name:         "date in future",
+			date:         now.AddDate(1, 0, 0).Format("2006-01-02"),
+			expectedDate: "",
+			expectedErr: func(t require.TestingT, err error, i ...any) {
+				require.ErrorIs(t, err, timeutil.ErrDateInFuture)
+			},
 		},
 	}
-	for _, testCase := range testTable {
-		result, err := ParseDate(testCase.tdate)
-		if err != nil {
-			t.Errorf("Ошибка %v", err)
-		}
+	for _, tt := range testTable {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 
-		expected := testCase.expected
-		if testCase.tdate == "" {
-			expected = time.Now().Format("2006/01/02")
-		}
-
-		if result != expected {
-			t.Errorf("Некорректный результат. ожидание: %s, получение: %s", expected, result)
-		}
+			result, err := timeutil.ParseDate(tt.date)
+			tt.expectedErr(t, err)
+			require.Equal(t, tt.expectedDate, result)
+		})
 	}
 }
