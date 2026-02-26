@@ -1,10 +1,9 @@
-package timeutil_test
+package timeutil
 
 import (
 	"testing"
 	"time"
 
-	"github.com/emtsv/exchange-rate-cli/internal/commands/timeutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -29,14 +28,14 @@ func TestDate2(t *testing.T) {
 			name: "to old date",
 			date: "1900-01-01",
 			expectedErr: func(t require.TestingT, err error, i ...any) {
-				require.ErrorIs(t, err, timeutil.ErrDateTooOld)
+				require.ErrorIs(t, err, ErrDateTooOld)
 			},
 		},
 		{
 			date:         "2022-12-",
 			expectedDate: "",
 			expectedErr: func(t require.TestingT, err error, i ...any) {
-				require.ErrorIs(t, err, timeutil.ErrInvalidDate)
+				require.ErrorIs(t, err, ErrInvalidDate)
 			},
 		},
 		{
@@ -50,7 +49,7 @@ func TestDate2(t *testing.T) {
 			date:         now.AddDate(1, 0, 0).Format("2006-01-02"),
 			expectedDate: "",
 			expectedErr: func(t require.TestingT, err error, i ...any) {
-				require.ErrorIs(t, err, timeutil.ErrDateInFuture)
+				require.ErrorIs(t, err, ErrDateInFuture)
 			},
 		},
 	}
@@ -58,7 +57,7 @@ func TestDate2(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := timeutil.ParseDate(tt.date)
+			result, err := ParseDate(tt.date)
 			tt.expectedErr(t, err)
 			require.Equal(t, tt.expectedDate, result)
 		})
