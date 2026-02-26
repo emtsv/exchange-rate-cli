@@ -1,26 +1,36 @@
-package commands
+package timeutil
 
 import (
-	"fmt"
+	"errors"
 	"time"
 )
 
-func def() (day, month, year int) {
-	default_time := time.Now()
-	return default_time.Day(), default_time.Month(), default_time.Year()
-}
+var (
+	ErrDateTooOld   = errors.New("дата должна быть после 2000 года")
+	ErrInvalidDate  = errors.New("неверный формат даты")
+	ErrDateInFuture = errors.New("дата не может быть в будущем")
+)
 
-func parse() {
-	day, month, year := def()
-	fmt.Printf("Сегодняшняя дата: \n", &day, &month, &year)
-}
+var now = time.Now()
 
-func convertion(date) {
-	
-	date:=fmt.Scan(&day,&month,&year)
-	date := (year, time.Month(month),day,0,0,0,0, time.UTC)
+func ParseDate(date string) (string, error) {
 
-	formatted:=date.Format("02/01/2006")
+	if date == "" {
+		return time.Now().Format("2006/01/02"), nil
+	}
 
+	t, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return "", ErrInvalidDate
+	}
 
+	if t.Year() < 2000 {
+		return "", ErrDateTooOld
+	}
+
+	if t.After(now) {
+		return "", ErrDateInFuture
+	}
+
+	return t.Format("2006/01/02"), nil
 }
