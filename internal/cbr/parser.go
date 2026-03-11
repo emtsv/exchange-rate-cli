@@ -7,11 +7,12 @@ import (
 )
 
 var ErrNomin = errors.New("номинал равен нулю")
-var ErrVal = errors.New("валюта: %w")
+var ErrVal = errors.New("валюта")
+var ErrEmpty = errors.New("пустое поле")
 
 func (v Valute) RateRUB() (float64, error) {
 	if v.Nominal == 0 {
-		return 0, ErrNomin
+		return 0, ErrEmpty
 	}
 
 	clean := strings.ReplaceAll(v.Value, ",", ".")
