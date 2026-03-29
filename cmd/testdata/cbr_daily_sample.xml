@@ -1,17 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValCurs Date="01.01.2010" name="Bank">
-    <Valute ID="123">
-        <NumCode>840</NumCode>
-        <CharCode>USD</CharCode>
+<ValCurs Date="01.02.2006" name="Foreign Currency Market">
+    <Valute ID="R01010">
+        <NumCode>036</NumCode>
+        <CharCode>AUD</CharCode>
         <Nominal>1</Nominal>
-        <Name>Доллар США</Name>
-        <Value>90</Value>
+        <Name>Австралийский доллар</Name>
+        <Value>21,1541</Value>
+        <VunitRate>21,1541</VunitRate>
     </Valute>
-    <Valute ID="124">
-        <NumCode>978</NumCode>
-        <CharCode>EUR</CharCode>
-        <Nominal>1</Nominal>
-        <Name>Евро</Name>
-        <Value>98</Value>
-    </Valute>
-</ValCurs>
