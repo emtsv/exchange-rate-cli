@@ -1,0 +1,9 @@
+<ValCurs Date="01.02.2006" name="Foreign Currency Market">
+    <Valute ID="R01010">
+        <NumCode>036</NumCode>
+        <CharCode>AUD</CharCode>
+        <Nominal>1</Nominal>
+        <Name>Австралийский доллар</Name>
+        <Value>21,1541</Value>
+        <VunitRate>21,1541</VunitRate>
+    </Valute>
